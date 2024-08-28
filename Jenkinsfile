@@ -1,22 +1,29 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:lts-buster-slim'
+            args '-p 5000:5000'
+        }
+    }
+    environment {
+        CI = 'true'
+    }
     stages {
         stage('Build') {
             steps {
-                echo 'Building...'
+                sh 'npm install'
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing...'
+                sh './index.js'
             }
         }
-        stage('Deploy') {
-            when {
-                branch 'staging'
-            }
+        stage('Deliver') {
             steps {
-                echo 'Deploying to staging... 12345'
+                sh './index.js'
+                input message: 'Finished using the web site? (Click "Proceed" to continue)'
+                sh './index.js'
             }
         }
     }
