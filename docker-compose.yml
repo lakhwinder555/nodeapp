@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  nodeapp:
+    image: nodeapp
+    build:
+      context: nodeapp
+      dockerfile: ./Dockerfile
+    ports:
+      - 5000:5000
