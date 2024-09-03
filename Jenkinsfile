@@ -3,7 +3,7 @@ pipeline {
         docker {
             image 'node:lts-buster-slim'
             args '-p 5000:5000'
-        }
+        } 
     }
     environment {
         CI = 'true'
