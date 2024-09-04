@@ -1,29 +1,54 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:lts-buster-slim'
-            args '-p 5000:5000'
-        } 
-    }
-    environment {
-        CI = 'true'
-    }
+    agent any
+
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                sh 'npm install'
-            } 
-        }
-        stage('Test') {
-            steps {
-                sh './index.js'
+                // Checkout code from GitHub
+                git branch: 'main', url: 'https://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@github.com/lakhwinder555/nodeapp.git'
             }
         }
-        stage('Deliver') {
+
+        stage('Install Dependencies') {
             steps {
-                sh './index.js'
-                input message: 'Finished using the web site? (Click "Proceed" to continue)'
-                sh './index.js'
+                // Install dependencies
+                sh 'npm install'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Optional: Run tests (if you have any test scripts defined)
+                // Uncomment if you have tests
+                // sh 'npm test'
+                echo 'No tests to run'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Deploy the application
+                echo 'Deploying application...'
+                // If you have a deployment script, run it here
+                // sh './deploy.sh'
+            }
+        }
+
+        stage('Restart Application') {
+            steps {
+                // Stop any existing Node.js application
+                echo 'Restarting application...'
+                sh '''
+                pkill -f "node index.js" || true
+                nohup npm start &
+                '''
+            }
+        }
+
+        stage('App URL') {
+            steps {
+                // Output the application URL
+                echo 'Application is running at: http://localhost:2000'
             }
         }
     }
