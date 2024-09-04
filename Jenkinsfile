@@ -48,7 +48,7 @@ pipeline {
         stage('App URL') {
             steps {
                 // Output the application URL
-                echo 'Application is running at: http://localhost:2000'
+                echo 'Application is running at: http://localhost:5000'
             }
         }
     }
